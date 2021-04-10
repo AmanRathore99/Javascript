@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="./employeeFormLogic.js"></script>
+        <script src="./validate.js"></script>
+        <script>
+            var empLogic;
+            var employees;
+            var validate;
+            function presenter(){
+                empLogic = new EmployeeLogic()
+                validate = new ValidateForm(); 
+                var depts = empLogic.departments;
+                loadList(depts);
+                document.getElementById('btnclear').addEventListener('click',clearInputs,false);
+                employees = empLogic.getEmployees();
+                loadTable(employees);
+
+                document.getElementById('btnsave').addEventListener('click',save,false);
+
+                document.getElementById('txteno').addEventListener('keyup', function(){
+                    let value = validate.checkNumeric(this.value);
+                    document.getElementById('txteno').value = value; 
+                },false);
+
+                document.getElementById('txtsal').addEventListener('keyup', function(){
+
+                    let value = validate.checkNumeric(this.value);
+                    document.getElementById('txtsal').value = value; 
+                },false);                
+
+            };
+
+            function loadList(depts){
+                var opt;
+                for(var i=0; i< depts.length; i++) {
+                    opt+= '<option value="'+depts[i]+ '">'+ depts[i] +'</option>';    
+                }
+
+                document.getElementById('lstdname').innerHTML = opt;
+            }
+
+            function clearInputs(){
+                var inputs =  document.getElementsByTagName('input');
+                for(var i=0; i< inputs.length; i++) {
+                    inputs[i].value = "";
+                }
+            }
+
+            function deleteEmp(index){
+                employees = empLogic.deleteEmployees(index);
+                loadTable(employees);
+            }
+
+            function loadTable(employeesData){
+                let headers = Object.keys(employeesData[0]);
+                let head = "";
+                let body = "";
+                headers.map(data => {
+                    head  += "<td> " + data + "</td>";
+                });
+                
+
+                head+= "<td> Delete </td>" 
+    
+                employeesData.map((employee , i) =>{
+                    body +="<tr><td>"+employee.EmpNo+"</td><td>"+employee.EmpName+"</td><td>"+employee.DeptName+"</td><td>"+employee.Salary+'</td><td><button type="button" class="btn btn-primary" id="i"  onclick="deleteEmp('+i+')">Delete</button></td><tr>'
+                   
+                    })
+
+                document.getElementById('thead').innerHTML = head;
+                document.getElementById('tbody').innerHTML = body;
+            }
+           
+            function save(){
+            
+                let empNo = parseInt(document.getElementById('txteno').value);
+                let empName1 = document.getElementById('txtename').value;
+                let salary = parseInt(document.getElementById('txtsal').value);
+                
+                employees = empLogic.getEmployees();
+                let body = "";
+                let validEmpNo = true;
+                for(var i=0;i<employees.length;i++){
+                    if(employees[i].EmpNo === empNo){
+                        validEmpNo = false;
+                        break;
+                    } 
+                }              
+              
+                if(!validEmpNo){
+                    alert("Employee Number already exist");
+
+                    return ;
+                }
+
+                let empName = document.getElementById('txtename').value;
+                let validName = validate.checkEmpName(empName);
+                let validChar = validate.notNumber(empName);
+                if(!validName){
+                    alert("Employee Name is required");
+                    return ;
+                }
+
+                if(!validChar){
+                    alert("only character is allowed");
+                    return ;
+                }
+                var emp = {
+                    EmpNo: empNo,
+                    EmpName:  empName,
+                    Salary:parseInt(document.getElementById('txtsal').value)
+                };
+                
+                employees = empLogic.addEmployee(emp); 
+                console.log(employees);
+                loadTable(employees);
+                
+            }  window.onload = presenter;
+            
+        </script>
+    </head>
+    <body>
+        <h2>The Employee Information System</h2>
+        <table border="1">
+            <tbody>
+                <tr>
+                    <td>EmpNo</td>
+                    <td>
+                        <input type="text" id="txteno">
+                    </td>
+                </tr>
+                <tr>
+                    <td>EmpName</td>
+                    <td>
+                        <input type="text" id="txtename">
+                    </td>
+                </tr>
+                <tr>
+                    <td>DeptName</td>
+                    <td>
+                        <select  id="lstdname">
+                            <option value="1">A</option>
+                            <option value="2">B</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Salary</td>
+                    <td>
+                        <input type="text" id="txtsal">
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+        <button id="btnclear" class="btn btn-danger" style="margin-top: 1%;">Clear</button>
+        <button id="btnsave" class="btn btn-success" style="margin-top: 1%;">Save</button>
+        <hr>
+        <div id="dvemps">
+            
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-dark">
+                <thead id="thead">
+                    
+                </thead>
+                <tbody id="tbody">
+                
+                </tbody>
+            </table>
+        </div>
+        
+    </body>
+    </html>

@@ -1,0 +1,37 @@
+#it{
+    background-color: red;
+}
+
+#hr{
+    background-color: yellow;
+}
+
+#accounts{
+    background-color: lightcoral;
+}
+
+#sales{
+    background-color: cyan;
+}
+
+.row1{
+    background-color: hotpink !important;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.row2{
+    font-weight: bold;
+    background-color: green !important;
+    font-family: 'Times New Roman', Times, serif
+}
+
+.row3{
+
+    background-color: chocolate !important;
+    font-family: Arial, Helvetica, sans-serif;
+ } 
+
+.row4{
+    background-color: goldenrod !important;
+    font-family: cursive;
+}

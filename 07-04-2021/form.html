@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="./formLogic.js"></script>
+        <script src="./validation.js"></script>
+
+        <script>
+            var prdlogic;
+
+            function presenter(){
+                prdlogic = new ProductLogic();
+                var validation = new ValidateForm;
+                var category = prdlogic.category;
+                loadcategory(category);
+                var manufacturer = prdlogic.manufacturer;
+                loadmanufacturer(manufacturer);
+                
+               
+                let product =localStorage.getItem("Products").length?JSON.parse(localStorage.getItem("Products")):localStorage.getItem("Products");
+
+                if(!product.length){
+                    //console.log("as");
+                    product = [
+                        {1 :
+                            {
+                                productId: '',
+                                productName: '',
+                                categoryName: '',
+                                manufacturer: '',
+                                description : '',
+                                price : ''
+                            }
+                        }
+                    ]
+                    localStorage.setItem("Products",JSON.stringify(product));
+                }
+                 
+                loadTable(product);
+                
+                document.getElementById('btnsave').addEventListener('click',function(){
+                    let products = localStorage.getItem("Products").length ? JSON.parse(localStorage.getItem("Products")):localStorage.getItem("Products");
+                    let productId = document.getElementById('prdId').value;
+                    console.log('daa');
+                    let validProductId = true;
+                    for (let product in products) {
+                        if(products[product][Object.keys(products[product])[0]].productId == productId){
+                            validProductId = false;
+                            break;
+                        }
+                    }
+                    if(!validProductId){
+                        alert("Product Id exists");
+                        return;
+                    }
+                    let key = parseInt([Object.keys(products[products.length-1])[0]]) + 1 ;
+                    let productData = {}
+                    productData[key] =   {
+                        productId : productId,
+                        productName : document.getElementById('prdName').value,
+                        categoryName : document.getElementById('ctgry').value,
+                        manufacturer : document.getElementById('manufacture').value,
+                        description : document.getElementById('desc').value,
+                        price : document.getElementById('price').value,
+                    }
+                    
+                    console.log(products);
+                    products.push(productData);
+                    localStorage.setItem("Products" , JSON.stringify(products));
+                    loadTable(products);
+
+                 },false);
+
+
+                document.getElementById('btnclear').addEventListener('click',function(){
+
+                    document.getElementById('prdId').value = '';
+                    document.getElementById('prdName').value = '';
+                    document.getElementById('ctgry').value = '';
+                    document.getElementById('manufacture').value = '';
+                    document.getElementById('desc').value = '';
+                    document.getElementById('price').value = '';
+                    
+                },false);
+
+                document.getElementById('prdId').addEventListener('keyup', function(){
+
+                let value = validation.checkNumeric(this.value);
+                document.getElementById('prdId').value = value; 
+                },false);
+
+            };
+
+            function loadcategory(category){
+                var opt;
+                for(var i=0; i< category.length; i++) {
+                    opt+= '<option value="'+category[i]+ '">'+ category[i] +'</option>';    
+                }
+
+                document.getElementById('ctgry').innerHTML = opt;
+            }
+
+            function loadmanufacturer(manufacturer){
+                var opt;
+                for(var i=0; i< manufacturer.length; i++) {
+                    opt+= '<option value="'+manufacturer[i]+ '">'+ manufacturer[i] +'</option>';    
+                }
+
+                document.getElementById('manufacture').innerHTML = opt;
+            }
+
+            function deleteProduct(index){
+                let products = prdlogic.deleteProduct(index);
+                loadTable(products)
+            }
+
+            function loadTable(product){
+                
+             var table="";
+             var data = "";
+            var headers = Object.keys(product[0][Object.keys(product[0])[0]]);
+            table+= "<table style='border:double'>";
+                table += "<thead><tr>"
+            for(var c=0;c<=headers.length;c++){
+                if(headers.length === c){
+                    table +="<th style='border:double'>Delete</th>"
+                }else{
+                    table+= "<th style='border:double'>"+headers[c]+"</th>"; 
+                }
+            }    
+            table+="</tr></thead>";
+
+
+            data+="<tbody>"
+            for(var row=1;row<product.length;row++){
+                data+="<tr>"; 
+                for(var d=0;d<=headers.length;d++){
+                    if(headers.length === d){
+                        data += '<td><button class="btn btn-primary" onClick="deleteProduct('+row+')">Delete</button></td>'
+                    }else{
+                        data +="<td>"+product[row][Object.keys(product[row])[0]][headers[d]]+"</td>"; 
+                    }
+                }  
+                data+="</tr>";
+            }
+            data+="</tbody>";
+            data+="</table>";
+
+
+                document.getElementById('thead').innerHTML = table;
+                document.getElementById('tbody').innerHTML = data;
+            }
+
+            function search_table(){
+ 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tbody");
+            tr = table.getElementsByTagName("tr");
+
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td") ; 
+                for(j=0 ; j<td.length ; j++)
+                {
+                let tdata = td[j] ;
+                if (tdata) {
+                    if (tdata.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break ; 
+                    } else {
+                    tr[i].style.display = "none";
+                    }
+                 } 
+               }
+            }
+          }       
+            window.onload = presenter;
+               
+        </script>
+    </head>
+    <body>
+        <h2>The Employee Information System</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Product ID</td>
+                    <td>
+                        <input type="text" id="prdId">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Product Name</td>
+                    <td>
+                        <input type="text" id="prdName">
+                    </td>
+                </tr>
+                <tr>
+                    <td>CategoryName</td>
+                    <td>
+                        <select  id="ctgry">
+                            <option value="radio">A</option>
+                            <option value="radio">B</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Manufacturer</td>
+                    <td>
+                        <select  id="manufacture">
+                            <option value="1">A</option>
+                            <option value="2">B</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Discription</td>
+                    <td>
+                        <input type="text" id="desc">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>
+                        <input type="text" id="price">
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+        <button id="btnclear" class="btn btn-danger" style="margin-top: 1%;">Clear</button>
+        <button id="btnsave" class="btn btn-success" style="margin-top: 1%;">Save</button>
+        <hr>
+        <div id="dvemps">
+            
+        </div>
+        <div class="panel-body">
+            <div> 
+                <input type="text" id="myInput" onkeyup="search_table()" placeholder="Search" title="Type in a name">
+            </div>
+            <table class="table table-striped">
+                <thead id="thead">
+                    
+                </thead>
+                <tbody id="tbody">
+                    
+                
+                </tbody>
+            </table>
+        </div>
+        
+    </body>
+    </html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script>
+            window.onload = function(){
+                // read all draggable element with its tag
+                var row = document.getElementsByTagName('tr');
+                // attach the 'dragstart' event for them
+                for(var i=0;i<row.length;i++){
+                    row[i].addEventListener('dragstart', function(evt){
+                        // set the 'id' of the element being dragged into data transfer so that it will be used when the 'drop' event is executed
+                        evt.dataTransfer.setData('Row', evt.target.id);
+                    },false);
+                }
+
+                // get the target element when the drop is done
+                var dvtgt = document.getElementById("dvtgt");
+
+                // subscribe to drop and dragover events for the target
+                dvtgt.addEventListener('drop',function(evt){
+                    evt.preventDefault();
+                    var elementData = evt.dataTransfer.getData("Row");
+                    let container = document.getElementById(elementData);
+                    console.log(container);
+                    evt.target.appendChild(container);
+                },false);
+
+                dvtgt.addEventListener('dragover',function(evt){
+                    // do not perform any other operations untill the drop has not takes place
+                    evt.preventDefault();
+                },false)
+            }
+        </script>
+    </head>
+    <body>
+        <h1>HTML 5 Drag Drop</h1>
+   <div>
+    <table class="table table-striped">
+        <thead>
+         <tr>
+            <th>ProductId</th>
+            <th>ProductName</th>
+            <th>Category</th>
+            <th>Manufacturer</th>
+            <th>Description</th>
+            <th>Price</th>
+         </tr>   
+        </thead>    
+        <tbody>
+            <tr draggable="true" id="row1">
+                <td>101</td>
+                <td>Laptop</td>
+                <td>Touch</td>
+                <td>HP</td>
+                <td>Best Quality Product</td>
+                <td>50000</td>
+            </tr>
+
+            <tr draggable="true" id="row2">
+                <td>102</td>
+                <td>Bike</td>
+                <td>Gear</td>
+                <td>Honda</td>
+                <td>Good Average</td>
+                <td>100000</td>
+            </tr>
+
+            <tr draggable="true" id="row3">
+                <td>103</td>
+                <td>LED</td>
+                <td>Touch</td>
+                <td>Samsung</td>
+                <td>HD screen</td>
+                <td>45000</td>
+            </tr>
+           </tbody> 
+     </table>
+    </div>
+
+        <h4>Target DOM</h4>
+       <div>
+    <table class="table table-striped">
+        <thead>
+         <tr>
+            <th>ProductId</th>
+            <th>ProductName</th>
+            <th>Category</th>
+            <th>Manufacturer</th>
+            <th>Description</th>
+            <th>Price</th>
+         </tr>   
+        </thead>    
+        <tbody id="dvtgt">
+            
+
+
+      </tbody>    
+
+    </body>
+</html>

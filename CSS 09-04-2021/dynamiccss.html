@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>Dynamic Css</title>
+     <link rel="stylesheet" href="./dynamic.css">
+     <script>
+         function presentor(){
+
+        document.getElementById('it').addEventListener('mouseenter',function(){
+                this.className = 'row1';
+        },false);
+
+        document.getElementById('it').addEventListener('mouseleave',function(){
+                this.className = '';
+        },false);
+
+        document.getElementById('sales').addEventListener('mouseenter',function(){
+                this.className = 'row2';
+        },false);
+
+        document.getElementById('sales').addEventListener('mouseleave',function(){
+                this.className = '';
+        },false);
+
+        document.getElementById('accounts').addEventListener('mouseenter',function(){
+                this.className = 'row3';
+        },false);
+
+        document.getElementById('accounts').addEventListener('mouseleave',function(){
+                this.className = '';
+        },false);
+
+        document.getElementById('hr').addEventListener('mouseenter',function(){
+                this.className = 'row4';
+        },false);
+
+        document.getElementById('hr').addEventListener('mouseleave',function(){
+                this.className = '';
+        },false);
+
+
+         } window.onload = presentor;
+     </script>
+</head>
+
+<body>
+    
+    <div>
+        <table>
+           <thead>
+               <tr>
+                   <th>EmpnNo</th>
+                   <th>EMpName</th>
+                   <th>DeptName</th>
+                   <th>Salary</th>
+               </tr>
+           </thead>
+           <tbody id="tbody">
+               <tr id="it">
+                 <td>101</td>
+                 <td>Aman</td>
+                 <td>IT</td>
+                 <td>50000</td>
+               </tr>
+               <tr id="sales">
+                <td>102</td>
+                <td>Raju</td>
+                <td>SALES</td>
+                <td>40000</td>
+              </tr>
+              <tr id="accounts">
+                <td>103</td>
+                <td>Daksh</td>
+                <td>ACCOUNTS</td>
+                <td>20000</td>
+              </tr>
+              <tr id="hr">
+                <td>104</td>
+                <td>Tina</td>
+                <td>HRD</td>
+                <td>10000</td>
+              </tr>
+              <tr id="it">
+                <td>105</td>
+                <td>Ayushi</td>
+                <td>IT</td>
+                <td>60000</td>
+              </tr>
+           </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

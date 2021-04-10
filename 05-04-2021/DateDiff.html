@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <title>Date Assignment</title>
+    <script>
+    
+     function findDiff(){
+         var d1 = document.getElementById('txt1').value;
+         var d2 = document.getElementById('txt2').value;
+        
+        var date1 = d1.split(',');
+        var date = new Date();
+        date.setFullYear(date1[0]);
+        date.setMonth(date1[1]);
+        date.setDate(date1[2]);
+        date.setHours(date1[3]);
+        date.setMinutes(date1[4]);
+        date.setSeconds(date1[5]);
+        console.log(date);
+
+        var date2 = d2.split(',');
+        var date3 = new Date();
+        date3.setFullYear(date2[0]);
+        date3.setMonth(date2[1]);
+        date3.setDate(date2[2]);
+        date3.setHours(date2[3]);
+        date3.setMinutes(date2[4]);
+        date3.setSeconds(date2[5]);
+        console.log(date3);
+
+        var yearDiff = date1[0] - date2[0];
+        console.log("Year Diffrence" + yearDiff);
+
+
+        var monthDiff = date1[1] - date2[1];
+        console.log("Month Diffrence" + monthDiff);
+
+        var dateDiff = date1[2] - date2[2];
+        console.log("Day Diffrence" + dateDiff);
+
+        var hourDiff = date1[3]  - date2[3];
+        console.log("Hour Diffrence" + hourDiff);
+        
+        var minuteDiff = date1[4] - date2[4];
+        console.log("Minute Diffrence" + minuteDiff);
+
+        var secondDiff = date1[5] - date2[5];
+        console.log("Second Diffrence" + secondDiff);
+
+        document.getElementById('year').innerText = yearDiff + " year";
+        document.getElementById('month').innerText = monthDiff + " month";
+        document.getElementById('day').innerText = dateDiff + " day";
+        document.getElementById('hour').innerText =  hourDiff + " hours";
+        document.getElementById('min').innerText =  minuteDiff + " minutes"; 
+        document.getElementById('sec').innerText = secondDiff + " seconds";
+
+        if(secondDiff >= 60){
+
+        var remainingSecond = parseInt(secondDiff) - parseInt(60);
+        var addMinutes = 1;
+        
+        var splitDate = d1.split(',');
+        var dateNew = new Date();
+        var finalSecond = dateNew.setSeconds(remainingSecond[5]);
+
+        }
+        
+     } window.onload = findDiff;
+
+    </script>
+</head>
+<body>
+    <div>
+        <input type="text" id="txt1"/>
+        <input type="text" id="txt2"/>
+    </div>
+
+    <button onclick="findDiff()">FindDiff</button>
+
+    <div>
+     <h3 id="year"></h3>
+     <h3 id="month"></h3>
+     <h3 id="day"></h3>
+     <h3 id="hour"></h3>
+     <h3 id="min"></h3>
+     <h3 id="sec"></h3>    
+    </div>
+</body>
+</html>

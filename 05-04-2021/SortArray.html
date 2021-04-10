@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        window.onload = function(){
+         
+        }
+
+        function sortString(){
+
+        var array = document.getElementById('txt').value;
+        var splitArray = array.split(',');
+            
+
+           splitArray.sort((a, b) => a.length - b.length);
+              
+            var sortValues =  JSON.stringify(splitArray, null, '\t');
+
+            document.getElementById('sort').innerText = sortValues;
+        }
+    </script>
+</head>
+<body>
+    <h3>Sort array based on length</h3>
+    <input type="text" id="txt" style="width: 20%;"/>
+    <button onclick="sortString()">Sort</button>
+    <h5 id="sort"></h5>
+</body>
+</html>
