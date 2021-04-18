@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./applications.js"></script>
+    <script src="./uigenerator.js"></script>
+    <script src="./datautility.js"></script>
+    <script src="./validatedata.js"></script>
+    <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+
+    <script>
+        function presentor() {
+
+            var data = new UIGenerator();
+            var category = data.loadcategory();
+            var manufacture = data.loadmanufacture();
+        
+          document.getElementById('post').addEventListener('click', function() {
+            
+                let prd = {
+                    ProductId: document.getElementById('prdId').value,
+                    ProductName: document.getElementById('prdName').value,
+                    CategoryName: document.getElementById('ctgry').value,
+                    Manufacturer: document.getElementById('manufacture').value,
+                    Description: document.getElementById('desc').value,
+                    BasePrice: document.getElementById('price').value,
+
+                };
+                
+                postData(prd).then((response) => {
+            
+                   document.getElementById('dv').innerHTML = 'Revedved data ' + response;
+                },false).catch((error) => {
+                    console.log(error)
+                    document.getElementById('dv').innerHTML = 'Revedved data ' + error;
+                });
+
+            }, false)
+
+            document.getElementById('prdId').addEventListener('blur', function() {
+
+                var product = GetProductInfo();
+            }, false)
+
+            document.getElementById('prdName').addEventListener('blur', function() {
+
+                var product = GetProductInfo();
+            }, false)
+
+            document.getElementById('price').addEventListener('blur', function() {
+
+                var product = GetProductInfo();
+            }, false)  
+
+        } window.onload = presentor;
+
+        function getFirstTdContent(row) {
+         elem = row.children[4].textContent;
+           
+                if (elem == 'Home') {
+                    row.className = 'home';
+                
+                }
+                if(elem == 'Electronics'){
+                    row.className = 'electronics'
+                }
+                if(elem == 'Electrical'){
+                    row.className = 'electrical'
+                }
+
+                if(elem == 'Furniture'){
+                    row.className = 'furniture'
+                }
+
+                if(elem == 'Bajaj'){
+                    row.className = 'bajaj'
+                }
+
+
+            row.addEventListener('mouseleave', function() { 
+                row.className = '';
+            }, false);
+
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center mt-2">Product Management App with ES 6</h3>
+                <div id="dv"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-3">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3">
+                <form class="form-outer">
+                    <div class="form-group">
+                        <label for="PrdId" class="mb-0">Product ID</label>
+                        <input type="text" id="prdId" class="form-control">
+                        <p id="error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PrdName" class="mb-0">Product Name</label>
+                        <input type="text" id="prdName" class="form-control">
+                        <p id="nameerror"></p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="Category" class="mb-0">CategoryName</label>
+                                <select id="ctgry" class="form-control">
+                                    <option value="radio">A</option>
+                                    <option value="radio">B</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="manufacture" class="mb-0">Manufacture</label>
+                                <select id="manufacture" class="form-control">
+                                    <option value="radio">A</option>
+                                    <option value="radio">B</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="mb-0">Description</label>
+                        <input type="text" id="desc" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Price" class="mb-0">Price</label>
+                        <input type="text" id="price" class="form-control">
+                        <p id="priceerror"></p>
+                    </div>
+                    
+                    <div class="text-right">
+                        <button id="post" class="btn btn-info">POST</button>
+                        <button id="put" class="btn btn-info">PUT</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+    <div class="tableFixHead">
+        <table class="table table-striped header-fixed table-sm">
+            <thead id="thead">
+
+            </thead>
+            <tbody id="tbody">
+
+
+            </tbody>
+        </table>
+       </div>
+      </div>
+     </div>   
+    </div>
+</body>
+</div>
+
+</html>

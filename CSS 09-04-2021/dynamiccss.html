@@ -93,3 +93,187 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./applications.js"></script>
+    <script src="./uigenerator.js"></script>
+    <script src="./datautility.js"></script>
+    <script src="./validatedata.js"></script>
+    <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+      .tableFixHead          { overflow: auto; height: 300px; }
+      .tableFixHead thead th { position: sticky; top: 0;  height: 20px; }
+
+    
+    </style>
+
+    <script>
+     window.onload = function(){
+       
+             var data = new UIGenerator();
+            //var test = data.generateTable();
+            var category = data.loadcategory();
+            var manufacture = data.loadmanufacture();
+            // var products = new ProductLogic();
+            // var productSave = products.addProduct();
+            //var validation = new ValidateData();
+            //var gen = new getFirstTdContent();
+
+            
+            
+            document.getElementById('prdId').addEventListener('blur',function(){
+            
+                var product = GetProductInfo();
+          },false)
+          
+          document.getElementById('prdName').addEventListener('blur',function(){
+            
+            var product = GetProductInfo();
+      },false) 
+
+      document.getElementById('price').addEventListener('blur',function(){
+            
+            var product = GetProductInfo();
+      },false) 
+      
+           
+ 
+        document.getElementById('post').addEventListener('click',function(){
+            let prd = {
+                ProductId: document.getElementById('prdId').value,
+                ProductName: document.getElementById('prdName').value,
+                CategoryName: document.getElementById('ctgry').value,
+                Manufacturer:document.getElementById('manufacture').value,
+                Description:document.getElementById('desc').value,
+                BasePrice:document.getElementById('price').value,
+                
+            };
+
+          
+           
+           postData(prd).then((response)=>{
+               // document.getElementById('dv').innerHTML = 'Revedved data ' + response;
+                var data = new UIGenerator();
+                console.log(response);
+            }).catch((error)=>{
+                document.getElementById('dv').innerHTML = 'Revedved data ' + error;
+            });
+
+           deleteProduct(ProductRowId).then((response)=>{
+               console.log("Deleted Row " , response);
+           })
+
+        },false)
+
+       
+
+    }   
+    
+    function getFirstTdContent(row) {
+        elem = row.children[4].textContent;
+         //console.log(elem)
+        // console.log(row);
+            document.getElementById('ts').addEventListener('mouseenter',function(){
+                
+                    
+                    if(elem == 'Bajaj'){
+                    this.className = 'c1';
+                }
+               
+        },false);
+    
+        document.getElementById('ts').addEventListener('mouseleave',function(){
+                this.className = '';
+        },false);
+            
+        }
+    
+     
+    </script>
+
+
+</head>
+
+<body>
+    <span id="error"></span>
+    <span id="nameerror"></span>
+    <span id="priceerror"></span>
+    <h1>Product Management App with ES 6</h1>
+    <div id="dv"></div>
+    
+   <div class="container">
+       <form >
+           <div class="form-group">
+               <label for="PrdId">Product ID</label> 
+               <input type="text" id="prdId">
+            </div>
+            
+            <div class="form-group">
+                <label for="PrdName">Product ID</label> 
+                <input type="text" id="prdName">
+             </div>
+
+             <div class="form-group">
+                <label for="Category">CategoryName</label> 
+                <select  id="ctgry">
+                    <option value="radio">A</option>
+                    <option value="radio">B</option>
+                </select>
+             </div>
+
+             <div class="form-group">
+                <label for="manufacture">Manufacture</label> 
+                <select  id="manufacture">
+                    <option value="radio">A</option>
+                    <option value="radio">B</option>
+                </select>
+             </div>
+
+             <div class="form-group">
+                <label for="description">Description</label> 
+                <input type="text" id="desc">
+             </div>
+
+             <div class="form-group">
+                <label for="Price">Price</label> 
+                <input type="text" id="price">
+             </div>
+        </form>
+    </div>  
+    
+    <button id="post">POST</button>
+  
+  
+  <div class="tableFixHead">  
+    <table class="table table-striped header-fixed table-sm" >
+        <thead id="thead">
+            
+        </thead>
+        <tbody id="tbody">
+            
+        
+        </tbody>
+    </table>
+   </div> 
+</body>
+</div>
+</html>
+
+
+

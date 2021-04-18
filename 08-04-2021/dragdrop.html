@@ -26,9 +26,7 @@
                 dvtgt.addEventListener('drop',function(evt){
                     evt.preventDefault();
                     var elementData = evt.dataTransfer.getData("Row");
-                    let container = document.getElementById(elementData);
-                    console.log(container);
-                    evt.target.appendChild(container);
+                    evt.target.appendChild(document.getElementById(elementData));
                 },false);
 
                 dvtgt.addEventListener('dragover',function(evt){
@@ -97,6 +95,14 @@
          </tr>   
         </thead>    
         <tbody id="dvtgt">
+            <tr  draggable="false">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
             
 
 
